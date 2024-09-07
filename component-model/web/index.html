@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script type="importmap">
+        {
+            "imports": {
+                "@bytecodealliance/preview2-shim/filesystem": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/filesystem.js",
+                "@bytecodealliance/preview2-shim/io": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/io.js",
+                "@bytecodealliance/preview2-shim/cli": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/cli.js",
+                "@bytecodealliance/preview2-shim/clocks": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/clocks.js",
+                "@bytecodealliance/preview2-shim/http": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/http.js",
+                "@bytecodealliance/preview2-shim/random": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/random.js"
+              }
+          }
+      </script>
+    <h1>Wasm Component Demo</h1>
+    <input type="number" id="lhs" />
+    +
+    <!-- TODO: make a dropdown based on enum items in impl operators -->
+    <input type="number" id="rhs" />
+    <button onclick="run()">=</button>
+    <p id="answer"></p>
+
+    <script type="module">
+      console.log("Loading wasm module");
+      import { calculate } from "./bindings/composed.js";
+      function run() {
+        var x = document.getElementById("lhs");
+        var y = document.getElementById("rhs");
+        // TODO: make a case switch based on enum items in impl operators
+        document.getElementById("answer").innerHTML = calculate.addNumber(
+          x.value,
+          y.value
+        );
+      }
+      window.run = run;
+    </script>
+  </body>
+</html>
