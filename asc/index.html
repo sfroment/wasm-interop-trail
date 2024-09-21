@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Import @tensorflow/tfjs or @tensorflow/tfjs-core -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"> </script>
+
+<!-- Adds the WASM backend to the global backend registry -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-backend-wasm/dist/tf-backend-wasm.js"></script>
+<script type="module">
+tf.wasm.setThreadsCount(22);
+tf.setBackend('wasm').then(async () => {
+//  console.log(tf.wasm.getThreadsCount());
+  async function instantiate(module, imports = {}) {
+  
+  const adaptedImports = {
+    env: Object.assign(Object.create(globalThis), imports.env || {
+        getThreadsCount: tf.wasm.getThreadsCount,
+    }),
+  };
+  const { exports } = await WebAssembly.instantiate(module, adaptedImports);
+  return exports;
+}
+const {
+  memory,
+  run,
+} = await (async url => {
+    console.log("url", url);
+    return instantiate(
+  await (async () => {
+    const isNodeOrBun = typeof process != "undefined" && process.versions != null && (process.versions.node != null || process.versions.bun != null);
+    if (isNodeOrBun) { return globalThis.WebAssembly.compile(await (await import("node:fs/promises")).readFile(url)); }
+    else { return await globalThis.WebAssembly.compileStreaming(globalThis.fetch(url)); }
+  })(), {
+  }
+)
+})(new URL("./build/debug.wasm", import.meta.url));
+//run();
+//import { run } from "./build/debug.js";
+document.body.innerText = run();
+})
+
+</script>
+</head>
+<body></body>
+</html>
