@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <script type="importmap">
+        {
+            "imports": {
+                "@bytecodealliance/preview2-shim/filesystem": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/filesystem.js",
+                "@bytecodealliance/preview2-shim/io": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/io.js",
+                "@bytecodealliance/preview2-shim/cli": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/cli.js",
+                "@bytecodealliance/preview2-shim/clocks": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/clocks.js",
+                "@bytecodealliance/preview2-shim/http": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/http.js",
+                "@bytecodealliance/preview2-shim/random": "https://cdn.jsdelivr.net/npm/@bytecodealliance/preview2-shim@0.16.5/lib/browser/random.js"
+              }
+          }
+      </script>
+    <h1>Wasm Component Demo</h1>
+    <div>Is Even ?</div>
+    <input type="number" id="even" />
+    <button id="checkButton" onclick="isEven()">=</button>
+    <p id="answer"></p>
+
+    <script type="module">
+      console.log("Loading wasm module");
+      import { test } from "./transpile/test.js";
+      function isEven() {
+        var n = document.getElementById("even");
+        // TODO: make a case switch based on enum items in impl operators
+        document.getElementById("answer").innerHTML = test.isEven(
+          n.value,
+        ).toString();
+      }
+      window.isEven = isEven;
+
+      document.getElementById("even").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          document.getElementById("checkButton").click();
+        }
+      });
+    </script>
+  </body>
+</html>

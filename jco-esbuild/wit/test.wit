@@ -1,0 +1,10 @@
+package example:stuff;
+
+interface test {
+   is-even: func(n: s32) -> bool;
+}
+
+world adder {
+    export test;
+}
+

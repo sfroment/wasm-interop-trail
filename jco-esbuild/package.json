@@ -1,0 +1,24 @@
+{
+  "name": "jco-esbuild",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "all": "npm run build && npm run componentize && npm run transpile && npm run server",
+    "build": "esbuild src/index.ts --bundle --format=esm --outfile=dist/bundle.js",
+    "componentize": "jco componentize ./dist/bundle.js -w wit/test.wit -o out/test.wasm",
+    "transpile": "jco transpile out/test.wasm -o transpile",
+    "server": "npx serve .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.2",
+    "@bytecodealliance/jco": "^1.6.0"
+  },
+  "dependencies": {
+    "is-even": "^1.0.0"
+  }
+}
